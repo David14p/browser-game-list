@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameList</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <meta name="author" content="David14p">
+    <meta name="description" content="An AD-free list of good webgames">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: black;
+            height: 100%;
+            overflow: hidden;
+            user-select: none;
+            font-display: swap;
+        }
+
+        header {
+            position: relative;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            padding: 20px;
+            background-color: black;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        #container {
+            display: flex;
+            height: calc(100vh - 80px);
+            background-color: #dae4e8;
+        }
+
+        #buttonContainer {
+            flex: 1;
+            background-color: #dae4e8;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        #gameContainer {
+            flex: 3;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(100vh - 40px);
+            border-radius: 10px;
+            background-color: #dae4e8;
+        }
+
+        button {
+            margin-bottom: 10px;
+            background-color: #14a6db;
+            color: black;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+            transition: background-color 0s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #1085b0;
+            transform: scale(1.03);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .search-container {
+            margin-bottom: 0px;
+            margin-top: 8px;
+            margin-left: 8px;
+            width: 79%;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            border: none;
+        }
+
+        .search-container input:focus {
+            outline: none;
+        }
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .spinner div {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #14a6db;
+            border-radius: 50%;
+            border-top: 4px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 15px;  
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #dae4e8;  
+            border-radius: 8px; 
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #2c2c2c; 
+            border-radius: 8px; 
+            border: 3px solid #dae4e8;  
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #000000;  
+        }
+        * {
+            scrollbar-width: auto;
+            scrollbar-color: #2c2c2c #dae4e8; 
+        }
+        
+        #discordLink {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        #discordLogo {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.2s;
+            border-radius: 10px;
+        }
+
+        #discordLogo:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        GameList
+        <a href="https://discord.gg/9qxmVWNPAU" target="_blank" id="discordLink" rel="noopener noreferrer">
+            <img src="images/discord_logo.jpg" alt="Join our Discord" id="discordLogo">
+        </a>
+    </header>
+    <div id="container">
+        <div id="container2">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search games..." aria-label="Search games">
+            </div>
+            <div id="buttonContainer" aria-live="polite"></div>
+        </div>
+        <div id="gameContainer">
+            <iframe id="gameFrame" src="" frameborder="0" aria-live="assertive" loading="lazy"></iframe>
+            <div class="spinner" id="spinner">
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+const savedGames = [
+    { name: 'Fruit Merge', link: 'https://www.tafeldiploma.nl/gf/fruit-merge/5/' },
+    { name: 'Choppy Orc', link: 'http://mat.uc.pt/~mat1617/orc/' },
+    { name: 'Run 3', link: 'https://lekug.github.io/tn6pS9dCf37xAhkJv/' },
+    { name: 'Eggy Car', link: 'https://google-opensocial.googleusercontent.com/gadgets/ifr?url=https://googleusercontent.b-cdn.net/eggy-car/ec.xml&container=ig' },
+    { name: 'Slope', link: 'https://google-opensocial.googleusercontent.com/gadgets/ifr?url=https://cdn.jsdelivr.net/gh/sk1bx/version@77d7c057275710c07925ba951e9e56902d101c84/3sp.xml&container=ig' },
+    { name: 'Drive Mad', link: 'https://drivemad.me/iframe/index.html' },
+    { name: 'Pacman', link: 'https://pacman.ee/wp-content/games/pacman/' },
+    { name: 'Snowrider 3D', link: 'https://www.hoodamath.com/mobile/games/snow-rider-3d/game.html?nocheckorient=1' },
+    { name: 'Bloxd.io', link: 'http://bloxd.io/' },
+    { name: 'WorldGuessr', link: 'https://www.worldguessr.com/' },
+    { name: 'Time Shooter 2', link: 'https://html5.gamedistribution.com/62a72f2da7cb4b609579a47653546e6a/?gd_sdk_referrer_url=https%3A%2F%2Fwww.miniplay.com%2Fgame%2Ftime-shooter-2&mp_assets=https%3A%2F%2Fs2.minijuegosgratis.com%2F&mp_embed=0&mp_game_id=240290&mp_game_uid=time-shooter-2&mp_game_url=https%3A%2F%2Fwww.miniplay.com%2Fembed%2Ftime-shooter-2&mp_int=1&mp_locale=en_US&mp_player_type=IFRAME&mp_site_https_url=https%3A%2F%2Fwww.miniplay.com%2F&mp_site_name=miniplay.com&mp_site_url=https%3A%2F%2Fwww.miniplay.com%2F&mp_timezone=Europe%2FAmsterdam&mp_view_type=' },
+    { name: 'Smash karts', link: 'https://smashkarts.io/' },
+    { name: 'Doodle Road', link: 'https://doodleroad.github.io/doodle_road.html' },
+    { name: 'Polytrack', link: 'https://www.kodub.com/apps/polytrack' },
+    { name: 'Deadshot.io', link: 'https://deadshot.io/' },
+    { name: 'Space Waves', link: 'https://spacewaves.io/1.embed' },
+    { name: 'Space Waves', link: 'https://agar.io/v0_84d65/#ffa' },
+];
+
+const buttonContainer = document.getElementById('buttonContainer');
+const gameFrame = document.getElementById('gameFrame');
+const spinner = document.getElementById('spinner');
+const searchInput = document.getElementById('searchInput');
+let currentGame = null;
+
+function loadGameButtons() {
+    buttonContainer.innerHTML = savedGames.map((game, index) =>
+        `<button aria-label="Play ${game.name}" tabindex="0" data-index="${index}">${game.name}</button>`
+    ).join('');
+}
+
+buttonContainer.addEventListener('click', (event) => {
+    if (event.target.tagName === 'BUTTON') {
+        loadGame(event.target.dataset.index);
+    }
+});
+
+function loadGame(index) {
+    const game = savedGames[index];
+    if (currentGame === game.link) return;
+
+    currentGame = game.link;
+    gameFrame.src = game.link;
+    spinner.style.display = 'block';
+
+    let timeout = setTimeout(() => spinner.style.display = 'none', 5000);
+
+    gameFrame.onload = () => {
+        clearTimeout(timeout);
+        spinner.style.display = 'none';
+    };
+
+    gameFrame.onerror = () => {
+        clearTimeout(timeout);
+        spinner.style.display = 'none';
+        alert("Failed to load the game. Please try again.");
+    };
+}
+
+let searchTimeout;
+searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(filterGames, 0);
+});
+
+function filterGames() {
+    const query = searchInput.value.trim().toLowerCase();
+    for (const button of buttonContainer.children) {
+        button.style.display = button.textContent.toLowerCase().includes(query) ? '' : 'none';
+    }
+}
+
+loadGameButtons();
+
+    </script>
+</body>
+</html>
