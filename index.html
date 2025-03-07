@@ -47,6 +47,11 @@
             height: 100%;
             overflow-y: auto;
         }
+        #buttonContainer::after {
+            content: "";
+            display: block;
+            height: 20px;
+        }
 
         #gameContainer {
             flex: 3;
@@ -182,7 +187,7 @@
     <header>
         GameList
         <a href="https://discord.gg/9qxmVWNPAU" target="_blank" id="discordLink" rel="noopener noreferrer">
-            <img src="images/discord_logo.jpg" alt="Join our Discord" id="discordLogo">
+            <img src="images/discord_logo.jpg" loading="lazy" alt="Join our Discord" id="discordLogo">
         </a>
     </header>
     <div id="container">
@@ -218,7 +223,7 @@ const savedGames = [
     { name: 'Polytrack', link: 'https://www.kodub.com/apps/polytrack' },
     { name: 'Deadshot.io', link: 'https://deadshot.io/' },
     { name: 'Space Waves', link: 'https://spacewaves.io/1.embed' },
-    { name: 'Krunker.io', link: 'krunker.io' },
+    { name: 'Krunker.io', link: 'https://krunker.io' },
     { name: '2048', link: 'https://play2048.co/' },
 ];
 
