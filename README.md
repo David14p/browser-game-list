@@ -1,2 +1,3 @@
-A very simple list of games to play in your browser.
-If you think a game should be added you can submit its url in the Discord server linked on the main page (Only fullscreen games).
+A extremely simple list of games to play in your browser.
+
+https://david14p.github.io/Gamelist/
