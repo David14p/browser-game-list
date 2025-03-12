@@ -1,6 +1,5 @@
-A extremely simple list of games to play in your browser.
+A very simple list i made for myself of fun browser games.
 
 * [Website](https://david14p.github.io/Gamelist/)
 
-* [Discord](https://discord.gg/9qxmVWNPAU)
 
