@@ -14,7 +14,7 @@
             background-color: white;
             color: black;
             height: 100%;
-            overflow: hidden;
+            overflow-y: auto; /* Changed from hidden */
             user-select: none;
             font-display: swap;
         }
@@ -46,7 +46,7 @@
             flex-direction: column;
             height: calc(100% - 20px);
             overflow-y: auto;
-            padding-bottom: 40px;
+            padding-bottom: 80px; /* Increased padding to make last button visible */
         }
 
         #gameContainer {
@@ -92,6 +92,11 @@
             transform: scale(0.98);
         }
 
+        /* Ensuring last button is always visible */
+        button:last-child {
+            margin-bottom: 20px;
+        }
+
         .search-container {
             margin-bottom: 0px;
             margin-top: 8px;
@@ -99,7 +104,6 @@
             width: 79%;
             padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
         }
 
         .search-container input {
@@ -202,7 +206,6 @@ const savedGames = [
     { name: 'Space Waves', link: 'https://spacewaves.io/1.embed' },
     { name: 'Krunker.io', link: 'https://krunker.io' },
     { name: '2048', link: 'https://play2048.co/' },
-    { name: 'Minecraft Classic', link: 'https://classic.minecraft.net' },
 ];
 
 const buttonContainer = document.getElementById('buttonContainer');
@@ -212,20 +215,20 @@ const searchInput = document.getElementById('searchInput');
 let currentGame = null;
 
 function loadGameButtons() {
-    buttonContainer.innerHTML = savedGames.map((game, index) =>
-        <button aria-label="Play ${game.name}" tabindex="0" data-index="${index}">${game.name}</button>
+    buttonContainer.innerHTML = savedGames.map((game, index) => 
+        `<button aria-label="Play ${game.name}" tabindex="0" data-index="${index}">${game.name}</button>`
     ).join('');
 }
 
 buttonContainer.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON') {
-        loadGame(event.target.dataset.index);
+        loadGame(Number(event.target.dataset.index));
     }
 });
 
 function loadGame(index) {
     const game = savedGames[index];
-    if (currentGame === game.link) return;
+    if (!game || currentGame === game.link) return;
 
     currentGame = game.link;
     gameFrame.src = game.link;
@@ -245,7 +248,6 @@ function loadGame(index) {
     };
 }
 
-let searchTimeout;
 searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(filterGames, 0);
@@ -259,9 +261,9 @@ function filterGames() {
 }
 
 loadGameButtons();
-
     </script>
 </body>
 </html>
+
 
 
