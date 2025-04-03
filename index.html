@@ -14,7 +14,7 @@
             background-color: white;
             color: black;
             height: 100%;
-            overflow-y: auto; /* Changed from hidden */
+            overflow-y: auto; 
             user-select: none;
             font-display: swap;
         }
@@ -46,7 +46,7 @@
             flex-direction: column;
             height: calc(100% - 20px);
             overflow-y: auto;
-            padding-bottom: 80px; /* Increased padding to make last button visible */
+            padding-bottom: 80px; 
         }
 
         #gameContainer {
@@ -92,7 +92,6 @@
             transform: scale(0.98);
         }
 
-        /* Ensuring last button is always visible */
         button:last-child {
             margin-bottom: 20px;
         }
@@ -256,7 +255,6 @@ function loadGame(index) {
     };
 }
 
-// Search bar functionality with debounce for better performance
 searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(filterGames, 300);
@@ -269,7 +267,6 @@ function filterGames() {
     }
 }
 
-// Initialize game buttons on page load
 loadGameButtons();
 
     </script>
