@@ -198,15 +198,15 @@ const savedGames = [
     { name: 'Eaglercraft', link: 'https://eaglercraftx.pages.dev/' },
     { name: 'Google Snake', link: 'https://ext.minijuegosgratis.com/google-snake/game.html' },
     { name: 'WorldGuessr', link: 'https://www.worldguessr.com/' },
-    { name: 'Time Shooter 2', link: 'https://html5.gamedistribution.com/62a72f2da7cb4b609579a47653546e6a/?gd_sdk_referrer_url=https%3A%2F%2Fwww.miniplay.com%2Fgame%2Ftime-shooter-2&mp_assets=https%3A%2F%2Fs2.minijuegosgratis.com%2F&mp_embed=0&mp_game_id=240290&mp_game_uid=time-shooter-2&mp_game_url=https%3A%2F%2Fwww.miniplay.com%2Fembed%2Ftime-shooter-2&mp_int=1&mp_locale=en_US&mp_player_type=IFRAME&mp_site_https_url=https%3A%2F%2Fwww.miniplay.com%2F&mp_site_name=miniplay.com&mp_site_url=https%3A%2F%2Fwww.miniplay.com%2F&mp_timezone=Europe%2FAmsterdam&mp_view_type=' },
-    { name: 'Time shooter 3', link: 'https://mathgames66.github.io/games/html5/timeshooter3swat/' },
-    { name: 'Smash karts', link: 'https://smashkarts.io/' },
+    { name: 'Time Shooter 2', link: 'https://html5.gamedistribution.com/62a72f2da7cb4b609579a47653546e6a/' },
+    { name: 'Time Shooter 3', link: 'https://mathgames66.github.io/games/html5/timeshooter3swat/' },
+    { name: 'Smash Karts', link: 'https://smashkarts.io/' },
     { name: 'Doodle Road', link: 'https://doodleroad.github.io/doodle_road.html' },
     { name: 'Polytrack', link: 'https://www.kodub.com/apps/polytrack' },
     { name: 'Deadshot.io', link: 'https://deadshot.io/' },
     { name: 'Space Waves', link: 'https://spacewaves.io/1.embed' },
     { name: 'Krunker.io', link: 'https://krunker.io' },
-    { name: '2048', link: 'https://playfreegamesonlinewithoutdownloading.github.io/2048.html' },
+    { name: '2048', link: 'https://playfreegamesonlinewithoutdownloading.github.io/2048.html' }
 ];
 
 const buttonContainer = document.getElementById('buttonContainer');
@@ -214,19 +214,25 @@ const gameFrame = document.getElementById('gameFrame');
 const spinner = document.getElementById('spinner');
 const searchInput = document.getElementById('searchInput');
 let currentGame = null;
+let searchTimeout;
 
 function loadGameButtons() {
-    buttonContainer.innerHTML = savedGames.map((game, index) => 
-        `<button aria-label="Play ${game.name}" tabindex="0" data-index="${index}">${game.name}</button>`
-    ).join('');
+    buttonContainer.innerHTML = savedGames
+        .map((game, index) => 
+            `<button aria-label="Play ${game.name}" role="button" tabindex="0" data-index="${index}">
+                ${game.name}
+            </button>`
+        ).join('');
 }
 
+// Load game when clicking a button
 buttonContainer.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON') {
         loadGame(Number(event.target.dataset.index));
     }
 });
 
+// Load game into iframe with improved spinner handling
 function loadGame(index) {
     const game = savedGames[index];
     if (!game || currentGame === game.link) return;
@@ -249,9 +255,10 @@ function loadGame(index) {
     };
 }
 
+// Search bar functionality with debounce for better performance
 searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(filterGames, 0);
+    searchTimeout = setTimeout(filterGames, 300);
 });
 
 function filterGames() {
@@ -261,7 +268,9 @@ function filterGames() {
     }
 }
 
+// Initialize game buttons on page load
 loadGameButtons();
+
     </script>
 </body>
 </html>
