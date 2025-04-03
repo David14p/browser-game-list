@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browser Game List</title>
+    <title>browser-game-list</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <meta name="description" content="A simple list of good games to play in your browser">
     <style>
@@ -11,111 +11,179 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #1e1e2e;
-            color: #ffffff;
-            height: 100vh;
+            background-color: white;
+            color: black;
+            height: 100%;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            user-select: none;
+            font-display: swap;
         }
 
         header {
-            width: 100%;
-            text-align: center;
+            position: relative;
+            display: flex;
+            justify-content: left;
+            align-items: center;
             padding: 20px;
-            background: linear-gradient(90deg, #ff8c00, #ff2d55);
-            font-size: 26px;
+            background-color: black;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 24px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         #container {
             display: flex;
-            width: 90%;
             height: calc(100vh - 80px);
-            margin-top: 10px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #282a36;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            background-color: #dae4e8;
         }
 
         #buttonContainer {
-            width: 30%;
-            background: #343746;
+            flex: 1;
+            background-color: #dae4e8;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 20px);
             overflow-y: auto;
+            padding-bottom: 40px;
         }
 
         #gameContainer {
-            width: 70%;
+            flex: 3;
             padding: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            background-color: #fff;
+            position: relative;
         }
 
         iframe {
             width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-            background-color: #1e1e2e;
+            height: calc(100vh - 40px);
+            border-radius: 10px;
+            background-color: #dae4e8;
         }
 
         button {
-            background: #ff8c00;
-            color: white;
-            padding: 12px;
+            margin-bottom: 10px;
+            background-color: #14a6db;
+            color: black;
+            padding: 12px 20px;
+            font-size: 16px;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            display: block;
             width: 100%;
-            margin-bottom: 10px;
+            max-width: 250px;
+            text-align: center;
+            transition: background-color 0s, transform 0.2s;
         }
 
         button:hover {
-            background: #ff2d55;
-            transform: scale(1.05);
+            background-color: #1085b0;
+            transform: scale(1.03);
         }
 
         button:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
         }
 
         .search-container {
+            margin-bottom: 0px;
+            margin-top: 8px;
+            margin-left: 8px;
+            width: 79%;
             padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
         }
 
         .search-container input {
             width: 100%;
             padding: 10px;
-            border-radius: 6px;
-            border: none;
+            border-radius: 8px;
             font-size: 16px;
-            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            border: 2px solid #ccc;
         }
 
+        .search-container input:focus {
+            outline: none;
+            border-color: #14a6db;
+            box-shadow: 0 0 8px rgba(20, 166, 219, 0.5);
+        }
+
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .spinner div {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #14a6db;
+            border-radius: 50%;
+            border-top: 4px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 15px;  
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #dae4e8;  
+            border-radius: 8px; 
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #2c2c2c; 
+            border-radius: 8px; 
+            border: 3px solid #dae4e8;  
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #000000;  
+        }
+        * {
+            scrollbar-width: auto;
+            scrollbar-color: #2c2c2c #dae4e8; 
+        }
     </style>
 </head>
 <body>
-    <header>Browser Game List</header>
+    <header>
+        Browser-game-list
+    </header>
     <div id="container">
-        <div id="buttonContainer">
+        <div id="container2">
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search games...">
+                <input type="text" id="searchInput" placeholder="Search games..." aria-label="Search games">
             </div>
+            <div id="buttonContainer" aria-live="polite"></div>
         </div>
         <div id="gameContainer">
-            <iframe id="gameFrame" src=""></iframe>
+            <iframe id="gameFrame" src="" frameborder="0" aria-live="assertive" loading="lazy"></iframe>
+            <div class="spinner" id="spinner">
+                <div></div>
+            </div>
         </div>
     </div>
+
     <script>
-        const games = [
+const savedGames = [
     { name: 'Fruit Merge', link: 'https://www.tafeldiploma.nl/gf/fruit-merge/5/' },
     { name: 'Choppy Orc', link: 'http://mat.uc.pt/~mat1617/orc/coffee.html' },
     { name: 'Run 3', link: 'https://player03.com/run/3/beta/' },
@@ -135,31 +203,65 @@
     { name: 'Krunker.io', link: 'https://krunker.io' },
     { name: '2048', link: 'https://play2048.co/' },
     { name: 'Minecraft Classic', link: 'https://classic.minecraft.net' },
-        ];
+];
 
-        const buttonContainer = document.getElementById('buttonContainer');
-        const gameFrame = document.getElementById('gameFrame');
-        const searchInput = document.getElementById('searchInput');
+const buttonContainer = document.getElementById('buttonContainer');
+const gameFrame = document.getElementById('gameFrame');
+const spinner = document.getElementById('spinner');
+const searchInput = document.getElementById('searchInput');
+let currentGame = null;
 
-        function loadGames() {
-            buttonContainer.innerHTML += games.map(game => 
-                `<button onclick="loadGame('${game.link}')">${game.name}</button>`
-            ).join('');
-        }
+function loadGameButtons() {
+    buttonContainer.innerHTML = savedGames.map((game, index) =>
+        <button aria-label="Play ${game.name}" tabindex="0" data-index="${index}">${game.name}</button>
+    ).join('');
+}
 
-        function loadGame(link) {
-            gameFrame.src = link;
-        }
+buttonContainer.addEventListener('click', (event) => {
+    if (event.target.tagName === 'BUTTON') {
+        loadGame(event.target.dataset.index);
+    }
+});
 
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase();
-            const buttons = buttonContainer.getElementsByTagName('button');
-            for (let button of buttons) {
-                button.style.display = button.textContent.toLowerCase().includes(query) ? '' : 'none';
-            }
-        });
+function loadGame(index) {
+    const game = savedGames[index];
+    if (currentGame === game.link) return;
 
-        loadGames();
+    currentGame = game.link;
+    gameFrame.src = game.link;
+    spinner.style.display = 'block';
+
+    let timeout = setTimeout(() => spinner.style.display = 'none', 5000);
+
+    gameFrame.onload = () => {
+        clearTimeout(timeout);
+        spinner.style.display = 'none';
+    };
+
+    gameFrame.onerror = () => {
+        clearTimeout(timeout);
+        spinner.style.display = 'none';
+        alert("Failed to load the game. Please try again.");
+    };
+}
+
+let searchTimeout;
+searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(filterGames, 0);
+});
+
+function filterGames() {
+    const query = searchInput.value.trim().toLowerCase();
+    for (const button of buttonContainer.children) {
+        button.style.display = button.textContent.toLowerCase().includes(query) ? '' : 'none';
+    }
+}
+
+loadGameButtons();
+
     </script>
 </body>
 </html>
+
+
